@@ -5,16 +5,15 @@ import axios from "axios";
 
 const HotCollections = () => {
 
-  const [collectionsData, setcollectionsData] = useState([])
   const [itemsArray, setItemsArray] = useState([])
   useEffect(() => {
     async function hotCollections() {
       const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections`)
       console.log(data)
-      setcollectionsData(data)
-      setItemsArray(data[2].items)
-      console.log(itemsArray)
+      const filteredData = data.slice(0, 4);
+      setItemsArray(filteredData)
     } 
+    
     hotCollections();
   }, []);
   return (
@@ -27,23 +26,23 @@ const HotCollections = () => {
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
-          {itemsArray.map((_, index) => (
+          {itemsArray.map((item, index) => (
             <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" key={index}>
               <div className="nft_coll">
                 <div className="nft_wrap">
                   <Link to="/item-details">
-                    <img src={itemsArray.nftImage} className="lazy img-fluid" alt="" />
+                    <img src={item.nftImage} className="lazy img-fluid" alt="" />
                   </Link>
                 </div>
                 <div className="nft_coll_pp">
                   <Link to="/author">
-                    <img className="lazy pp-coll" src={itemsArray.authorImage} alt="" />
+                    <img className="lazy pp-coll" src={item.authorImage} alt="" />
                   </Link>
                   <i className="fa fa-check"></i>
                 </div>
                 <div className="nft_coll_info">
                   <Link to="/explore">
-                    <h4>{itemsArray.title}</h4>
+                    <h4>{item.title}</h4>
                   </Link>
                   <span>ERC-192</span>
                 </div>
